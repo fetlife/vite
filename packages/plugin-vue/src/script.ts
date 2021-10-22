@@ -27,9 +27,10 @@ export function setResolvedScript(
 // inlined template cannot be individually hot updated.
 export function isUseInlineTemplate(
   descriptor: SFCDescriptor,
-  isProd: boolean
+  isProd: boolean,
+  allowUseInlineTemplate: boolean
 ): boolean {
-  return isProd && !!descriptor.scriptSetup && !descriptor.template?.src
+  return allowUseInlineTemplate && isProd && !!descriptor.scriptSetup && !descriptor.template?.src
 }
 
 export function resolveScript(
@@ -53,7 +54,7 @@ export function resolveScript(
     ...options.script,
     id: descriptor.id,
     isProd: options.isProduction,
-    inlineTemplate: isUseInlineTemplate(descriptor, !options.devServer),
+    inlineTemplate: isUseInlineTemplate(descriptor, !options.devServer, !!options.allowUseInlineTemplate),
     refTransform: options.refTransform !== false,
     templateOptions: resolveTemplateCompilerOptions(descriptor, options, ssr),
     // @ts-ignore TODO remove ignore when we support this in @vue/compiler-sfc

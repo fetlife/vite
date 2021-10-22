@@ -25,6 +25,12 @@ export interface Options {
 
   isProduction?: boolean
 
+  /**
+   * Enable or disable usage of inline template for the script setup
+   * @default true
+   */
+  allowUseInlineTemplate?: boolean
+
   // options to pass on to @vue/compiler-sfc
   script?: Partial<SFCScriptCompileOptions>
   template?: Partial<SFCTemplateCompileOptions>
@@ -73,7 +79,8 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
     include = /\.vue$/,
     exclude,
     customElement = /\.ce\.vue$/,
-    refTransform = false
+    refTransform = false,
+    allowUseInlineTemplate = true
   } = rawOptions
 
   const filter = createFilter(include, exclude)
@@ -96,6 +103,7 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
   let options: ResolvedOptions = {
     isProduction: process.env.NODE_ENV === 'production',
     ...rawOptions,
+    allowUseInlineTemplate,
     include,
     exclude,
     customElement,
