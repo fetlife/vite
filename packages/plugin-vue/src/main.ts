@@ -55,7 +55,7 @@ export async function transformMain(
 
   // template
   const hasTemplateImport =
-    descriptor.template && !isUseInlineTemplate(descriptor, !devServer)
+    descriptor.template && !isUseInlineTemplate(descriptor, !devServer, !!options.allowUseInlineTemplate)
 
   let templateCode = ''
   let templateMap: RawSourceMap | undefined = undefined

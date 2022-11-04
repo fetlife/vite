@@ -69,6 +69,12 @@ export interface Options {
    * Use custom compiler-sfc instance. Can be used to force a specific version.
    */
   compiler?: typeof _compiler
+
+  /**
+   * Enable or disable usage of inline template for the script setup
+   * @default true
+   */
+  allowUseInlineTemplate?: boolean
 }
 
 export interface ResolvedOptions extends Options {
@@ -85,7 +91,8 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
     include = /\.vue$/,
     exclude,
     customElement = /\.ce\.vue$/,
-    reactivityTransform = false
+    reactivityTransform = false,
+    allowUseInlineTemplate = true
   } = rawOptions
 
   const filter = createFilter(include, exclude)
@@ -113,7 +120,8 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
     root: process.cwd(),
     sourceMap: true,
     cssDevSourcemap: false,
-    devToolsEnabled: process.env.NODE_ENV !== 'production'
+    devToolsEnabled: process.env.NODE_ENV !== 'production',
+    allowUseInlineTemplate
   }
 
   return {
